@@ -24,11 +24,22 @@ public class MainVerticle extends AbstractVerticle {
 	@Override
 	public void start(Promise<Void> startPromise) throws Exception {
 
+		// ------------------- Periodic
+
+		vertx.setPeriodic(1000, id -> {
+			// This handler will get called every second
+			System.out.println("timer fired!");
+		});
+
 		final Router router = Router.router(vertx);
+
+		// ------------------ Client web
 
 		final WebClientOptions options = new WebClientOptions().setDefaultHost("localhost").setDefaultPort(8081);
 		options.setKeepAlive(false);
 		final WebClient client = WebClient.create(vertx, options);
+
+		// Handler failure
 
 		router.route().failureHandler(context -> {
 			final Throwable failure = context.failure();
@@ -37,6 +48,12 @@ public class MainVerticle extends AbstractVerticle {
 					.end(Buffer.buffer(Json.encode(new RestException("Error message", failure))));
 
 		});
+
+		router.get("/exception").handler(context -> {
+			throw new IllegalArgumentException();
+		});
+
+		// handlers
 
 		router.route().handler(BodyHandler.create());
 
