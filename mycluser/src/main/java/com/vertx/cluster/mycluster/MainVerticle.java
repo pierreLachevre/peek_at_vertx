@@ -23,13 +23,6 @@ public class MainVerticle extends AbstractVerticle {
 			}
 
 			req.response().putHeader("content-type", "text/plain").end("My first Verticle! " + map.get(1));
-		}).listen(8890, http -> {
-			if (http.succeeded()) {
-				startPromise.complete();
-				System.out.println("HTTP server started on port 8888");
-			} else {
-				startPromise.fail(http.cause());
-			}
-		});
+		}).listen(8890);
 	}
 }

@@ -42,13 +42,6 @@ public class MainVerticle extends AbstractVerticle {
 
 		router.route().handler(BodyHandler.create());
 
-		router.route().failureHandler(context -> {
-			final Throwable failure = context.failure();
-			LOGGER.error(failure.getMessage(), failure);
-			context.response().setStatusCode(400).end(Buffer.buffer(Json.encode(failure)));
-
-		});
-
 		// ----------------------------------Library
 
 		router.get("/library").produces("application/json").handler(context -> {

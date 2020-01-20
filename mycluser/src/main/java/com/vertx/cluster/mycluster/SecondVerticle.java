@@ -24,13 +24,6 @@ public class SecondVerticle extends AbstractVerticle {
 
 			req.response().putHeader("content-type", "text/plain").end("My second Verticle! " + map.get(1));
 
-		}).listen(8891, http -> {
-			if (http.succeeded()) {
-				startPromise.complete();
-				System.out.println("HTTP server started on port 8889");
-			} else {
-				startPromise.fail(http.cause());
-			}
-		});
+		}).listen(8891);
 	}
 }
